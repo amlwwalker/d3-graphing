@@ -1,0 +1,86 @@
+<li><a href='#' id='goto-simple' class='pill'>simple chart</a></li>
+<li><a href='#' id='goto-confidence' class='pill'>confidence chart</a></li>
+<li><a href='#' id='goto-integer' class='pill'>integer axis</a></li>
+<li><a href='#' id='goto-linkedfill' class='pill'>Linked, filled</a></li>
+<li><a href='#' id='goto-linkednofill' class='pill'>Linked, not filled</a></li>
+
+<script> 
+$('#goto-simple').on('click', function() {
+    var simple = 'MG.data_graphic({\n'
+    + '  title: "UFO Sightings",\n'
+    + '  description: "Yearly UFO sightings from 1945 to 2010.",\n'
+    + '  data: MG.convert.date(JSON.parse(jsonData.getValue()), \'date\'),\n'
+    + '  width: 400,\n'
+    + '  height: 250,\n'
+    + '  target: ".result",\n'
+    + '  x_accessor: "date",\n'
+    + '  y_accessor: "value",\n'
+    + '  show_confidence_band: [],\n'
+    + '  interpolate: "monotone"\n'
+    + '});';
+    editor.setValue(simple);
+});
+$('#goto-confidence').on('click', function() {
+    var confidence = 'MG.data_graphic({\n'
+    + 'title: "Confidence Band",\n'
+    + 'description: "This is an example of a graphic with a confidence band and extended x-axis ticks enabled.",\n'
+    + 'data: MG.convert.date(JSON.parse(jsonData.getValue()), \'date\'),\n'
+    + 'format: \'percentage\',\n'
+    + 'width: 200,\n'
+    + 'height: 250,\n'
+    + 'target: ".result",\n'
+    + 'show_secondary_x_label: false,\n'
+    + 'show_confidence_band: [\'l\', \'u\'],\n'
+    + 'x_extended_ticks: true\n'
+    + '});';
+    editor.setValue(confidence);
+});
+
+$('#goto-integer').on('click', function() {
+    var integer = 'MG.data_graphic({\n'
+    + 'title: "Small Range of Integers",\n'
+    + 'description: "When we have a data object of integers and a small range of values, the auto-generated set of y-axis ticks are filtered so that we don\'t include fractional values.",\n'
+    + 'data: MG.convert.date(JSON.parse(jsonData.getValue()), \'date\'),\n'
+    + 'interpolate: \'basic\',\n'
+    + 'width: 600,\n'
+    + 'height: 200,\n'
+    + 'right: 40,\n'
+    + 'show_confidence_band: [],\n'
+    + 'target: \'.result\'\n'
+    + '});';
+    editor.setValue(integer);
+});
+$('#goto-linkedfill').on('click', function() {
+    var linkedfill = 'MG.data_graphic({\n'
+        + 'title: "Linked Graphic",\n'
+        + 'description: "The two graphics in this section are linked together. A rollover in one causes a rollover in the other.",\n'
+        + 'data: MG.convert.date(JSON.parse(jsonData.getValue()), \'date\'),\n'
+        + 'linked: true,\n'
+        + 'width: 600,\n'
+        + 'height: 200,\n'
+        + 'right: 40,\n'
+        + 'xax_count: 4,\n'
+        + 'show_confidence_band: [],\n'
+        + 'target: \'.result\'\n'
+    + '});';
+    editor.setValue(linkedfill);
+});
+$('#goto-linkednofill').on('click', function() {
+    var linkednofill = 'MG.data_graphic({\n'
+        + 'title: "Other Linked Graphic",\n'
+        + 'description: "Roll over and watch as the graphic to the left triggers.",\n'
+        + 'data: MG.convert.date(JSON.parse(jsonData.getValue()), \'date\'),\n'
+        + 'area: false,\n'
+        + 'linked: true,\n'
+        + 'width: 600,\n'
+        + 'height: 200,\n'
+        + 'right: 40,\n'
+        + 'xax_count: 4,\n'
+        + 'show_confidence_band: [],\n'
+        + 'target: \'.result\'\n'
+    + '});';
+    editor.setValue(linkednofill);
+});
+
+</script>
+

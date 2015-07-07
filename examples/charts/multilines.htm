@@ -1,0 +1,62 @@
+<li><a href='#' id='goto-multiline' class='pill'>Multiline chart</a></li>
+<li><a href='#' id='goto-brokenMultiline' class='pill'>Broken Multiline chart</a></li>
+<li><a href='#' id='goto-labelling' class='pill'>Labelling Lines</a></li>
+
+<script> 
+$('#goto-multiline').on('click', function() {
+
+    var multiline = 'var data = JSON.parse(jsonData.getValue());\n'
+    + 'for (var i = 0; i < data.length; i++) {\n'
+    + '    data[i] = MG.convert.date(data[i], \'date\');\n'
+    + '}\n'
+    + 'MG.data_graphic({\n'
+    + '    title: "Multi-Line Chart",\n'
+    + '    description: "This line chart contains multiple lines.",\n'
+    + '    data: data,\n'
+    + '    width: 600,\n'
+    + '    height: 200,\n'
+    + '    right: 40,\n'
+    + '    target: \'.result\',\n'
+    + '    legend: [\'Line 1\',\'Line 2\',\'Line 3\'],\n'
+    + '    legend_target: \'.legend\'\n'
+    + '});\n'
+    editor.setValue(multiline);
+});
+$('#goto-brokenMultiline').on('click', function() {
+    var brokenMultiline = 'var data = JSON.parse(jsonData.getValue());\n'
+    + 'for (var i = 0; i < data.length; i++) {\n'
+    + '    data[i] = MG.convert.date(data[i], \'date\');\n'
+    + '}\n'
+    + 'MG.data_graphic({\n'
+    + '    title: "Broken Multi-Lines",\n'
+    + '    description: \'Setting missing_is_hidden works with multiple lines too.\',\n'
+    + '    data: data,\n'
+    + '    width: 600,\n'
+    + '    height: 200,\n'
+    + '    right: 40,\n'
+    + '    missing_is_hidden: true,\n'
+    + '    target: \'.result\',\n'
+    + '    show_secondary_x_label: false\n'
+    + '});\n'
+    editor.setValue(brokenMultiline);
+});
+$('#goto-labelling').on('click', function() {
+    var labellingMultiline = 'var data = JSON.parse(jsonData.getValue());\n'
+    + 'for (var i = 0; i < data.length; i++) {\n'
+    + '        data[i] = MG.convert.date(data[i], \'date\');\n'
+    + '    }\n'
+    + 'MG.data_graphic({\n'
+    + '    title: "Labeling Lines",\n'
+    + '    data: data,\n'
+    + '    width: 600,\n'
+    + '    height: 200,\n'
+    + '    right: 40,\n'
+    + '    legend: [\'US\', \'CA\', \'DE\'],\n'
+    + '    target: \'.result\'\n'
+    + '});\n'
+    editor.setValue(labellingMultiline);
+});
+
+
+</script>
+

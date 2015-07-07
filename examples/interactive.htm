@@ -1,0 +1,261 @@
+<html lang='en'>
+<head>
+
+    <title>Visua-Learn</title>
+
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,700' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=PT+Serif:400,700,400italic' rel='stylesheet' type='text/css'>
+    <link href='https://netdna.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.css' rel='stylesheet' type='text/css'>
+    <link href='https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css' rel='stylesheet' type='text/css'>
+
+    <link href='../dist/metricsgraphics.css' rel='stylesheet' type='text/css'>
+    <link href='css/metricsgraphics-demo.css' rel='stylesheet' type='text/css'>
+    <link href='css/interactive.css' rel='stylesheet' type='text/css'>
+
+    <script src='https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.0/d3.min.js' charset='utf-8'></script>
+    <script src="js/lib/ace.js" charset="utf-8"></script>
+    
+    <!-- dev start -->
+    <script src='../src/js/MG.js'></script>
+    <script src='../src/js/common/data_graphic.js'></script>
+    <script src='../src/js/common/hooks.js'></script>
+    <script src='../src/js/common/register.js'></script>
+    <script src='../src/js/common/bootstrap_tooltip_popover.js'></script>
+    <script src='../src/js/common/chart_title.js'></script>
+    <script src='../src/js/common/y_axis.js'></script>
+    <script src='../src/js/common/x_axis.js'></script>
+    <script src='../src/js/common/init.js'></script>
+    <script src='../src/js/common/markers.js'></script>
+    <script src='../src/js/common/window_listeners.js'></script>
+    <script src='../src/js/layout/bootstrap_dropdown.js'></script>
+    <script src='../src/js/layout/button.js'></script>
+    <script src='../src/js/charts/line.js'></script>
+    <script src='../src/js/charts/histogram.js'></script>
+    <script src='../src/js/charts/point.js'></script>
+    <script src='../src/js/charts/bar.js'></script>
+    <script src='../src/js/charts/table.js'></script>
+    <script src='../src/js/charts/missing.js'></script>
+    <script src='../src/js/misc/process.js'></script>
+    <script src='../src/js/misc/smoothers.js'></script>
+    <script src='../src/js/misc/formatters.js'></script>
+    <script src='../src/js/misc/transitions.js'></script>
+    <script src='../src/js/misc/utility.js'></script>
+    <script src='../src/js/misc/error.js'></script>
+    <script src='http://html5-demos.appspot.com/static/filesystem/filer.js/demos/js/dnd.js'></script>
+    <!-- dev end -->
+
+</head>
+
+<body>
+
+    <div class='container'>
+        <div class='row main-windows-titles'>
+            <div class='col-xs-3'>Data</div>
+            <div class='js-title col-xs-5'>
+                JavaScript <a href='https://github.com/mozilla/metrics-graphics/wiki/List-of-Options#list-of-options' target='_blank'>See Full List of Options</a>
+                <button type='button' class='update btn'>Run</button>
+            </div>
+<!--             <div class='col-xs-4' id='fields'>
+                y_accessor
+                <select id="y_accessor">
+                </select>
+                x_accessor
+                <select id="x_accessor">
+                </select>
+            </div> -->
+        </div>
+        <div class='row main-windows'>
+            <div class='data col-xs-3' id='data'>
+                <!-- <textarea></textarea> -->
+            </div>
+            <div class='js col-xs-5' id='editor'></div>
+            <div class='col-xs-3'>
+                <div class='result text-center'></div>
+                <div class='legend text-center'></div>
+                <button class="btn btn-success" id="save_as_svg" value="">
+            Save as SVG</button>
+                <div class="console" id="console"></div>
+            </div>
+        </div>
+        <ul class='examples text-center'>
+            <li><a href='#' id='goto-lines' class='pill'>Lines</a></li>
+            <li><a href='#' id='goto-multilines' class='pill'>Multiple Lines</a></li>
+            <li><a href='#' id='goto-data' class='pill'>Data</a></li>
+            <li><a href='#' id='goto-bars' class='pill'>Bars</a></li>
+            <!-- <li><a href='#' id='goto-rollovers' class='pill'>Rollovers</a></li>
+            <li><a href='#' id='goto-auto-time-formatting' class='pill'>Automatic time formatting</a></li>
+            <li><a href='#' id='goto-annotations' class='pill'>Annotations</a></li>
+            <li><a href='#' id='goto-updating' class='pill'>Updating</a></li>
+            <li><a href='#' id='goto-other' class='pill'>Other</a></li>
+            <li><a href='#' id='goto-experimental' class='pill'>Experimental</a></li>
+            <li><a href='#' id='goto-addons' class='pill'>Addons</a></li> -->
+        </ul>
+        <ul class='topics examples text-center'>
+        
+        </ul>
+    </div>
+    <div class='container footer'>
+    </div>
+    <script> 
+    $('#goto-lines').on('click', function() {
+            $('.topics').load('charts/lines.htm', function(data) {
+                $('.topics').html(data)
+        });
+    });
+    $('#goto-multilines').on('click', function() {
+            $('.topics').load('charts/multilines.htm', function(data) {
+                $('.topics').html(data)
+        });
+    });
+    $('#goto-data').on('click', function() {
+            $('.topics').load('charts/scatters.htm', function(data) {
+                $('.topics').html(data)
+        });
+    });
+    $('#goto-bars').on('click', function() {
+            $('.topics').load('charts/bars.htm', function(data) {
+                $('.topics').html(data)
+        });
+    });
+    </script>
+    <script> //drag and drop
+    var dnd = new DnDFileController('#data', function(files) {  
+      var f = files[0];
+      var csv = false
+      //its a csv, so convert to json
+      if (f.type.match('text/csv')) {
+        csv = true;
+      }
+
+      var reader = new FileReader();
+        reader.onloadend = function(e) {
+            process = this.result
+        if (csv) {
+            process = csvJSON(process)
+        }
+        var result = JSON.parse(process);
+        // console.log(result)
+        // JSON.stringify(data, null, 2)
+        jsonData.setValue(process);
+
+        // var L = result.length;
+        // fields = []
+        // for (var i = 0; i < L; i++) {
+        //     var obj = result[i];
+        //     for (var j in obj) {
+        //         fields.push(j)
+        //     }
+        // }
+        // $.unique(fields).forEach(function(e) {
+        //     $('#y_accessor').append("<option value="+e+">"+e+"</option>")
+        //     $('#x_accessor').append("<option value="+e+">"+e+"</option>")
+        // })
+        // console.log($.unique(fields))
+        // $('.data').val(this.result);
+      };
+      reader.readAsText(f);
+
+      // read the json and process all of the fields in each element
+
+    });
+    </script>
+    <script>
+        var default_call = 'MG.data_graphic({\n'
+            + '  title: "UFO Sightings",\n'
+            + '  description: "Yearly UFO sightings from 1945 to 2010.",\n'
+            + '  data: JSON.parse(jsonData.getValue()),\n'
+            + '  markers: [{\'year\': 1964, \'label\': \'"The Creeping Terror" released\'}],\n'
+            + '  width: 400,\n'
+            + '  height: 250,\n'
+            + '  target: ".result",\n'
+            + '  x_accessor: "year",\n'
+            + '  y_accessor: "sightings",\n'
+            + '  interpolate: "monotone"\n'
+            + '});';
+        jsonData = ace.edit("data");
+        jsonData.getSession().setMode("ace/mode/javascript");
+        jsonData.setValue(default_call);
+        jsonData.gotoLine(1);
+        jsonData.setHighlightActiveLine(false);
+
+        var editor = ace.edit("editor");
+        editor.getSession().setMode("ace/mode/javascript");
+        editor.setValue(default_call);
+        editor.gotoLine(1);
+        editor.setHighlightActiveLine(false);
+
+        d3.json('data/ufo-sightings.json', function(data) {
+            jsonData.setValue(JSON.stringify(data, null, 2));
+            document.getSelection().removeAllRanges();
+            eval(editor.getValue());
+        })
+
+        $('.update').on('click', function() {
+            eval(editor.getValue());
+            document.getSelection().removeAllRanges();
+        })
+    </script>
+
+    <script>
+    function downloadSVG()
+    {
+                // Declare Variables
+        var margin = {top: 60, right: 60, bottom: 60, left:120},
+        w = 600 - margin.left - margin.right,
+        h = 450 - margin.top - margin.bottom;
+
+        var svg = d3.select("svg")
+        svg.attr("width", w + margin.left + margin.right)
+        svg.attr("height", h + margin.top + margin.bottom)
+        svg.attr("font-family", "'Helvetica Neue',Helvetica,Arial,sans-serif")
+        svg.attr("color", "#333")
+        svg.append('g')
+        svg.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+        console.log(MG)
+        //Create Title 
+        svg.append("text")
+        .attr("x", w / 2 )
+        .attr("y", 0)
+        .style("text-anchor", "middle")
+        .text("Title of Diagram");
+
+        var e = document.createElement('script'); 
+        e.setAttribute('src', 'https://nytimes.github.io/svg-crowbar/svg-crowbar.js'); 
+        e.setAttribute('class', 'svg-crowbar'); 
+        document.body.appendChild(e);
+    }
+    $("#save_as_svg").click(function() { downloadSVG(); });
+    </script>
+    <script>
+    //var csv is the CSV file with headers
+    function csvJSON(csv){
+     
+      var lines=csv.split("\n");
+     
+      var result = [];
+     
+      var headers=lines[0].split(",");
+     
+      for(var i=1;i<lines.length;i++){
+     
+          var obj = {};
+          var currentline=lines[i].split(",");
+     
+          for(var j=0;j<headers.length;j++){
+            headers[j] = headers[j].replace(/(?:\\[rn]|[\r\n]+)+/g, ""); 
+            if (currentline[j] !== undefined) {
+              obj[headers[j]] = currentline[j].replace(/(?:\\[rn]|[\r\n]+)+/g, "");  
+            }
+          }
+     
+          result.push(obj);
+     
+      }
+      
+      //return result; //JavaScript object
+      return JSON.stringify(result,null,2); //JSON
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,123 @@
+<li><a href='#' id='goto-scatter' class='pill'>Simple Scatter</a></li>
+<li><a href='#' id='goto-categorize' class='pill'>Automatic categorizing</a></li>
+<li><a href='#' id='goto-bestfit' class='pill'>Simple Line of Best Fit</a></li>
+<li><a href='#' id='goto-leastsquares' class='pill'>Another Least Squares Example</a></li>
+<li><a href='#' id='goto-sizeandcolor' class='pill'>Scatterplot with Size and Color</a></li>
+
+<script> 
+$('#goto-scatter').on('click', function() {
+    var scatter = 'data = JSON.parse(jsonData.getValue())\n'
+    + 'MG.data_graphic({\n'
+    + '    title: "Simple Scatterplot",\n'
+    + '    description: "This is an example of a simple scatterplot, in which we have enabled rug plots on the y-axis by setting the y_rug option to true.",\n'
+    + '    data: data,\n'
+    + '    chart_type: \'point\',\n'
+    + '    width: 295,\n'
+    + '    height: 225,\n'
+    + '    right: 10,\n'
+    + '    target: \'.result\',\n'
+    + '    xax_format: function(f) {\n'
+    + '        var pf = d3.formatPrefix(f);\n'
+    + '        return Math.round(pf.scale(f)) + pf.symbol;\n'
+    + '    },\n'
+    + '    x_accessor: \'x\',\n'
+    + '    y_accessor: \'y\',\n'
+    + '    mouseover: function(d, i) { console.log(d,i); },\n'
+    + '    y_rug: true\n'
+    + '});\n'
+    editor.setValue(scatter);
+});
+$('#goto-leastsquares').on('click', function() {
+    var leastSquares = 'data = JSON.parse(jsonData.getValue())\n'
++ 'data = MG.convert.date(data, \'date\');\n'
++ 'MG.data_graphic({\n'
++ '    title: "Another Least Squares Example",\n'
++ '    description: "Least squares effortlessly works with dates or times on axes.",\n'
++ '    data: data,\n'
++ '    chart_type: \'point\',\n'
++ '    width: 295,\n'
++ '    height: 225,\n'
++ '    left: 60,\n'
++ '    right: 10,\n'
++ '    least_squares: true,\n'
++ '    target: \'.result\',\n'
++ '    x_accessor: \'date\',\n'
++ '    y_accessor: \'value\'\n'
++ '});\n'
+    editor.setValue(leastSquares);
+});
+
+$('#goto-categorize').on('click', function() {
+    var categorize = 'data = JSON.parse(jsonData.getValue())\n'
++ ' MG.data_graphic({\n'
++ '     title: "Automatic Category Coloring",\n'
++ '     description: "By setting color_type to \'category\' you can color the points according + tanother discrete value.",\n'
++ '     data: data,\n'
++ '     chart_type: \'point\',\n'
++ '     width: 295,\n'
++ '     height: 225,\n'
++ '     right: 10,\n'
++ '     target: \'.result\',\n'
++ '     xax_format: function(f) {\n'
++ '         var pf = d3.formatPrefix(f);\n'
++ '         return Math.round(pf.scale(f)) + pf.symbol;\n'
++ '     },\n'
++ '     x_accessor: \'x\',\n'
++ '     y_accessor: \'y\',\n'
++ '     color_accessor: \'v\',\n'
++ '     color_type:\'category\',\n'
++ '     y_rug: true\n'
++ ' });\n'
+
+    editor.setValue(categorize);
+});
+$('#goto-bestfit').on('click', function() {
+    var bestFit = 'data = JSON.parse(jsonData.getValue())\n'
+    + 'MG.data_graphic({\n'
+    + '    title: "Simple Line of Best Fit",\n'
+    + '    description: "For any scatterplot, set least_squares to true to add.",\n'
+    + '    data: data,\n'
+    + '    least_squares: true,\n'
+    + '    chart_type: \'point\',\n'
+    + '    width: 295,\n'
+    + '    height: 225,\n'
+    + '    right: 10,\n'
+    + '    target: \'.result\',\n'
+    + '    xax_format: function(f) {\n'
+    + '        var pf = d3.formatPrefix(f);\n'
+    + '        return Math.round(pf.scale(f)) + pf.symbol;\n'
+    + '    },\n'
+    + '    x_accessor: \'x\',\n'
+    + '    y_accessor: \'y\'\n'
+    + '});\n'
+    editor.setValue(bestFit);
+});
+$('#goto-sizeandcolor').on('click', function() {
+    var sizeAndColor = 'data = JSON.parse(jsonData.getValue())\n'
++ 'var color_range = [\'white\',\'yellow\'];'
++ 'MG.data_graphic({\n'
++ '    title: "Scatterplot with Size and Color",\n'
++ '    description: "Scatterplots have x_accessor, y_accessor, size_accessor, and color_accessor. For the last two you can also provide domain and range functions, to make it easy to change the color ranges. Colors default to red and blue, but can be overridden by passing an array of colors to color_range, as we\'ve done in this example for the dark theme.",\n'
++ '    data: data,\n'
++ '    chart_type: \'point\',\n'
++ '    width: 295,\n'
++ '    height: 225,\n'
++ '    right: 10,\n'
++ '    target: \'.result\',\n'
++ '    xax_format: function(f) {\n'
++ '        var pf = d3.formatPrefix(f);\n'
++ '        return Math.round(pf.scale(f)) + pf.symbol;\n'
++ '    },\n'
++ '    x_accessor: \'x\',\n'
++ '    y_accessor: \'y\',\n'
++ '    color_accessor:\'z\',\n'
++ '    color_range: color_range,\n'
++ '    size_accessor:\'w\',\n'
++ '    x_rug: true,\n'
++ '    y_rug: true\n'
++ '});\n';
+    editor.setValue(sizeAndColor);
+});
+
+</script>
+
