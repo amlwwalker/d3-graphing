@@ -1,5 +1,6 @@
 # Drag and Drop D3
 
+![layout](layout.png)
 * I wanted a library that allowed me to drag and drop json or csv data and get d3 graphs out.
 * D3 is a pain in its raw form, but things like dimple.js and metricsgraphics.js make it a bit easier.
 * However for quick simple visualisation it still wasnt everything. Google charts comes close but...... :(
