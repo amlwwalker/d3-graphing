@@ -1,0 +1,250 @@
+<html lang='en'>
+<head>
+
+    <title>Visua-Learn</title>
+
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,700' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=PT+Serif:400,700,400italic' rel='stylesheet' type='text/css'>
+    <link href='https://netdna.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.css' rel='stylesheet' type='text/css'>
+    <link href='https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css' rel='stylesheet' type='text/css'>
+
+    <link href='dist/metricsgraphics.css' rel='stylesheet' type='text/css'>
+    
+    <link href='css/interactive.css' rel='stylesheet' type='text/css'>
+
+    <script src='https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
+    <script src="js/lib/ace.js" charset="utf-8"></script>
+    <script src="js/lib/worker-javascript.js" charset="utf-8"></script>
+    
+    <!-- dev start -->
+  
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <!-- dev end -->
+    <link href='css/stylesheet.css' rel='stylesheet' type='text/css'>
+</head>
+
+<body>
+
+    <div class='container'>
+        <div class='row main-windows-titles'>
+            <div class='col-xs-3'>Data</div>
+            <div class='js-title col-xs-5'>
+                Editor
+                <!-- <button type='button' class='update btn'>Run</button> -->
+            </div>
+            <div class='col-xs-3'>Rendering</div>
+
+        </div>
+        <div class='row main-windows'>
+
+            <div class='data col-xs-3' id='data'>
+            </div>
+            <div class="tab-content col-xs-5">
+                <ul class="nav nav-pills">
+                    <li class="active"><a data-toggle="pill" href="#HTML">HTML</a></li>
+                    <li><a data-toggle="pill" href="#CSS">CSS</a></li>
+                    <li><a data-toggle="pill" href="#JAVASCRIPT">JAVASCRIPT</a></li>
+                </ul>
+                <div id="HTML" class="tab-pane fade in active">
+                  <div class='js editor' id='htmlEditor'></div>
+              </div>
+              <div id="CSS" class="tab-pane fade">
+                  <div class='js editor' id='cssEditor'></div>
+              </div>
+              <div id="JAVASCRIPT" class="tab-pane fade">
+                  <div class='js editor' id='javascriptEditor'></div>
+              </div>
+          </div>
+          <div class='col-xs-3'>
+            <iframe id="view"></iframe>
+        </div>
+    </div>
+
+
+
+
+</div>
+
+
+
+<div class='container footer'>
+</div>
+<script> 
+$('#goto-lines').on('click', function() {
+    $('.topics').load('charts/lines.htm', function(data) {
+        $('.topics').html(data)
+    });
+});
+$('#goto-multilines').on('click', function() {
+    $('.topics').load('charts/multilines.htm', function(data) {
+        $('.topics').html(data)
+    });
+});
+$('#goto-data').on('click', function() {
+    $('.topics').load('charts/scatters.htm', function(data) {
+        $('.topics').html(data)
+    });
+});
+$('#goto-bars').on('click', function() {
+    $('.topics').load('charts/bars.htm', function(data) {
+        $('.topics').html(data)
+    });
+});
+</script>
+    <script> //drag and drop
+    var dnd = new DnDFileController('#data', function(files) {  
+      var f = files[0];
+      var csv = false
+      //its a csv, so convert to json
+      if (f.type.match('text/csv')) {
+        csv = true;
+    }
+
+    var reader = new FileReader();
+    reader.onloadend = function(e) {
+        process = this.result
+        process = JSON.stringify(JSON.parse(process), null, 2);
+        if (csv) {
+            process = csvJSON(process)
+        }
+        var result = JSON.parse(process);
+        jsonData.setValue(process);
+
+    };
+    reader.readAsText(f);
+
+  });
+</script>
+<script>
+var default_call = '<html>\n'
++ '<head>\n'
++ '</head>\n'
++ '<body>\n'
++ '<h1>hello world</h1>\n'
++ '<script>\n'
++ 'document.body.style.backgroundColor = "red";\n'
++ 'var jon = JSON.parse(parent.jsonData.getValue())\n'
++ 'for (var v in jon) {\n'
++ 'document.body.innerHTML = jon[v].name\n'
++ '}\n'
++ '<\/script>\n'
++ '</body>\n'
++ '</html>\n'
+var retrievedCss = localStorage.getItem('css');
+var retrievedJavascript = localStorage.getItem('javascript');
+
+var retrievedCode = localStorage.getItem('code'); 
+console.log(retrievedCode)
+if (retrievedCode != null) {
+    default_call = retrievedCode;
+}                    
+jsonData = ace.edit("data");
+jsonData.getSession().setMode("ace/mode/javascript");
+jsonData.setValue(default_call);
+
+jsonData.setHighlightActiveLine(false);
+
+var htmlEditor = ace.edit("htmlEditor");
+htmlEditor.setTheme("ace/theme/monokai");
+htmlEditor.session.setMode("ace/mode/html");
+        // htmlEditor.getSession().setMode("ace/mode/html");
+        htmlEditor.setValue(default_call);
+        htmlEditor.gotoLine(1);
+        htmlEditor.setHighlightActiveLine(false);
+
+        var retrievedJson = localStorage.getItem('json');
+        if (retrievedJson != null) {
+            jsonData.setValue(retrievedJson, null, 2);
+        } else {
+            d3.json('data/ufo-sightings.json', function(data) {
+                jsonData.setValue(JSON.stringify(data, null, 2));
+                document.getSelection().removeAllRanges();
+            // eval(htmlEditor.getValue());
+        });
+        }
+        
+        jsonData.gotoLine(1);
+
+var cssEditor = ace.edit("cssEditor");
+cssEditor.session.setMode("ace/mode/css");
+
+var javascriptEditor = ace.edit("javascriptEditor");
+javascriptEditor.session.setMode("ace/mode/javascript");
+
+cssEditor.setValue(retrievedCss, null, 2);
+javascriptEditor.setValue(retrievedJavascript, null, 2);
+
+$(".editor").keyup(function(){
+// $('.update').on('click', function() {
+    var view=$('#view');
+    // view.contents().find('html').html(htmlEditor.getSession().getValue());
+
+    document.getElementById("view").srcdoc = htmlEditor.getSession().getValue();
+
+    
+    
+// });
+
+    $("#view").on("load", function () {
+        var iframe = document.getElementById('view');
+        iframe = (iframe.contentWindow) ? iframe.contentWindow : (iframe.contentDocument.document) ? iframe.contentDocument.document : iframe.contentDocument;
+
+        var css = cssEditor.getSession().getValue()
+        console.log(css)
+        body = iframe.document.body || iframe.document.getElementsByTagName('body')[0];
+        style = iframe.document.createElement('style');
+        style.type = 'text/css';
+        if (style.styleSheet){
+          style.styleSheet.cssText = css;
+        } else {
+          style.appendChild(document.createTextNode(css));
+        }
+
+        iframe.document.getElementsByTagName('head')[0].appendChild(style);
+        
+    
+    });
+
+    
+    localStorage.setItem('code', htmlEditor.getSession().getValue());
+    localStorage.setItem('json', jsonData.getSession().getValue());
+    localStorage.setItem('css', cssEditor.getSession().getValue());
+    localStorage.setItem('javascript', javascriptEditor.getSession().getValue());
+
+});
+
+
+        </script>
+
+    <script>
+    //var csv is the CSV file with headers
+    function csvJSON(csv){
+
+      var lines=csv.split("\n");
+
+      var result = [];
+
+      var headers=lines[0].split(",");
+
+      for(var i=1;i<lines.length;i++){
+
+          var obj = {};
+          var currentline=lines[i].split(",");
+
+          for(var j=0;j<headers.length;j++){
+            headers[j] = headers[j].replace(/(?:\\[rn]|[\r\n]+)+/g, ""); 
+            if (currentline[j] !== undefined) {
+              obj[headers[j]] = currentline[j].replace(/(?:\\[rn]|[\r\n]+)+/g, "");  
+          }
+      }
+
+      result.push(obj);
+
+  }
+
+      //return result; //JavaScript object
+      return JSON.stringify(result,null,2); //JSON
+  }
+  </script>
+</body>
+</html>
