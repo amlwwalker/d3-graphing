@@ -85,6 +85,18 @@
 
         <div class='footer'>
         </div>
+        <script>
+        $(window).on("error", function(evt) {
+        console.log("jQuery error event:", evt);
+        var e = evt.originalEvent; // get the javascript event
+        console.log("original event:", e);
+        if (e.message) { 
+            $('#footer').append("Error:\n\t" + e.message + "\nLine:\n\t" + e.lineno + "\nFile:\n\t" + e.filename);
+        } else {
+            $('#footer').append("Error:\n\t" + e.type + "\nElement:\n\t" + (e.srcElement || e.target));
+        }
+    });
+        </script>
     </div> <!-- end container -->
 
     <script src='js/main.js'></script>
