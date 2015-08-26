@@ -21,6 +21,7 @@
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
     <!-- dev end -->
     <link href='css/stylesheet.css' rel='stylesheet' type='text/css'>
+    <script src='http://html5-demos.appspot.com/static/filesystem/filer.js/demos/js/dnd.js'></script>
 </head>
 
 <body>
@@ -139,15 +140,15 @@ if (retrievedCode != null) {
     default_call = retrievedCode;
 }                    
 jsonData = ace.edit("data");
+jsonData.getSession().setUseWrapMode(true);
 jsonData.getSession().setMode("ace/mode/javascript");
 jsonData.setValue(default_call);
 
 jsonData.setHighlightActiveLine(false);
 
 var htmlEditor = ace.edit("htmlEditor");
-htmlEditor.setTheme("ace/theme/monokai");
+htmlEditor.getSession().setUseWrapMode(true);
 htmlEditor.session.setMode("ace/mode/html");
-        // htmlEditor.getSession().setMode("ace/mode/html");
         htmlEditor.setValue(default_call);
         htmlEditor.gotoLine(1);
         htmlEditor.setHighlightActiveLine(false);
@@ -167,9 +168,11 @@ htmlEditor.session.setMode("ace/mode/html");
 
 var cssEditor = ace.edit("cssEditor");
 cssEditor.session.setMode("ace/mode/css");
+cssEditor.getSession().setUseWrapMode(true);
 
 var javascriptEditor = ace.edit("javascriptEditor");
 javascriptEditor.session.setMode("ace/mode/javascript");
+javascriptEditor.getSession().setUseWrapMode(true);
 
 cssEditor.setValue(retrievedCss, null, 2);
 javascriptEditor.setValue(retrievedJavascript, null, 2);
@@ -178,20 +181,32 @@ $(".editor").keyup(function(){
 // $('.update').on('click', function() {
     var view=$('#view');
     // view.contents().find('html').html(htmlEditor.getSession().getValue());
-
+    var iframe = document.getElementById('view');
+    iframe = (iframe.contentWindow) ? iframe.contentWindow : (iframe.contentDocument.document) ? iframe.contentDocument.document : iframe.contentDocument;
     document.getElementById("view").srcdoc = htmlEditor.getSession().getValue();
+     
+     var styles=iframe.document.getElementsByTagName('style');
+     var i = styles.length;
+      while (i--) {
+          styles[i].parentNode.removeChild(styles[i]);
+      }
 
-    
-    
-// });
-
+     var scripts=iframe.document.getElementsByTagName('script');
+     var i = scripts.length;
+      while (i--) {
+          scripts[i].parentNode.removeChild(scripts[i]);
+      }
     $("#view").on("load", function () {
-        var iframe = document.getElementById('view');
-        iframe = (iframe.contentWindow) ? iframe.contentWindow : (iframe.contentDocument.document) ? iframe.contentDocument.document : iframe.contentDocument;
 
+
+        //load in the css from the css editor and apply to the head
         var css = cssEditor.getSession().getValue()
-        console.log(css)
         body = iframe.document.body || iframe.document.getElementsByTagName('body')[0];
+        
+        if (iframe.document.getElementById('style')) {
+          console.log('it exists!!!')
+        }
+
         style = iframe.document.createElement('style');
         style.type = 'text/css';
         if (style.styleSheet){
@@ -202,6 +217,13 @@ $(".editor").keyup(function(){
 
         iframe.document.getElementsByTagName('head')[0].appendChild(style);
         
+        var javascript = javascriptEditor.getSession().getValue()
+        script = iframe.document.createElement('script');
+        script.type = 'text/javascript';
+        script.innerHTML = javascript
+ 
+        
+        iframe.document.getElementsByTagName('body')[0].appendChild(script);
     
     });
 
