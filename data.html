@@ -3,19 +3,19 @@
 
     <title>Visua-Learn</title>
 
-    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,700' rel='stylesheet' type='text/css'>
-    <link href='https://fonts.googleapis.com/css?family=PT+Serif:400,700,400italic' rel='stylesheet' type='text/css'>
-    <link href='https://netdna.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.css' rel='stylesheet' type='text/css'>
-    <link href='https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css' rel='stylesheet' type='text/css'>
+    <link href='fonts/open-sans.css' rel='stylesheet' type='text/css'>
+    <link href='fonts/pt-serif-italics.css' rel='stylesheet' type='text/css'>
+    <link href='fonts/font-awesome.css' rel='stylesheet' type='text/css'>
+    <link href='css/bootstrap.min.css' rel='stylesheet' type='text/css'>
 
     <link href='dist/metricsgraphics.css' rel='stylesheet' type='text/css'>
-    <link href='css/metricsgraphics-demo.css' rel='stylesheet' type='text/css'>
+    
     <link href='css/interactive.css' rel='stylesheet' type='text/css'>
 
-    <script src='https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
-    <script src='https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.0/d3.min.js' charset='utf-8'></script>
+    <script src='js/jquery.min.js'></script>
+    <script src='js/d3.min.js' charset='utf-8'></script>
     <script src="js/lib/ace.js" charset="utf-8"></script>
-    
+    <script src="js/bootstrap.min.js"></script>
     <!-- dev start -->
     <script src='src/js/MG.js'></script>
     <script src='src/js/common/data_graphic.js'></script>
@@ -42,7 +42,10 @@
     <script src='src/js/misc/transitions.js'></script>
     <script src='src/js/misc/utility.js'></script>
     <script src='src/js/misc/error.js'></script>
-    <script src='http://html5-demos.appspot.com/static/filesystem/filer.js/demos/js/dnd.js'></script>
+    <script src='js/dnd.js'></script>
+
+    <!-- functional graphics -->
+    <script src="js/function-plot.js"></script>
     <!-- dev end -->
 
 </head>
@@ -50,6 +53,18 @@
 <body>
 
     <div class='container'>
+        <!-- graph types -->
+        <div class="row tab-content col-xs-12">
+        <ul class="nav nav-pills">
+            <li><a href='#' id='goto-lines' data-toggle="tab">Lines</a></li>
+            <li><a href='#' id='goto-multilines' data-toggle="tab">Multiple Lines</a></li>
+            <li><a href='#' id='goto-data' data-toggle="tab">Data</a></li>
+            <li><a href='#' id='goto-bars' data-toggle="tab">Bars</a></li>
+            <li><a href='#' id='goto-functional' data-toggle="tab">Functional</a></li>    
+        </ul>
+        <ul class='nav nav-pills topics examples text-center'>
+      </div>
+      <!-- configuration area -->
         <div class='row main-windows-titles'>
             <div class='col-xs-3'>Data</div>
             <div class='js-title col-xs-5'>
@@ -78,29 +93,16 @@
                 <div class="console" id="console"></div>
             </div>
         </div>
-        <ul class='examples text-center'>
-            <li><a href='#' id='goto-lines' class='pill'>Lines</a></li>
-            <li><a href='#' id='goto-multilines' class='pill'>Multiple Lines</a></li>
-            <li><a href='#' id='goto-data' class='pill'>Data</a></li>
-            <li><a href='#' id='goto-bars' class='pill'>Bars</a></li>
-            <!-- <li><a href='#' id='goto-rollovers' class='pill'>Rollovers</a></li>
-            <li><a href='#' id='goto-auto-time-formatting' class='pill'>Automatic time formatting</a></li>
-            <li><a href='#' id='goto-annotations' class='pill'>Annotations</a></li>
-            <li><a href='#' id='goto-updating' class='pill'>Updating</a></li>
-            <li><a href='#' id='goto-other' class='pill'>Other</a></li>
-            <li><a href='#' id='goto-experimental' class='pill'>Experimental</a></li>
-            <li><a href='#' id='goto-addons' class='pill'>Addons</a></li> -->
-        </ul>
-        <ul class='topics examples text-center'>
-        
-        </ul>
+      </div>
+</div>
+
     </div>
     <div class='container footer'>
     </div>
     <script> 
     $('#goto-lines').on('click', function() {
             $('.topics').load('charts/lines.htm', function(data) {
-                $('.topics').html(data)
+                $(".topics").html(data)
         });
     });
     $('#goto-multilines').on('click', function() {
@@ -118,6 +120,12 @@
                 $('.topics').html(data)
         });
     });
+    $('#goto-functional').on('click', function() {
+            $('.topics').load('charts/functional.htm', function(data) {
+                $('.topics').html(data)
+        });
+    });
+    
     </script>
     <script> //drag and drop
     var dnd = new DnDFileController('#data', function(files) {  
@@ -139,20 +147,6 @@
         // JSON.stringify(data, null, 2)
         jsonData.setValue(process);
 
-        // var L = result.length;
-        // fields = []
-        // for (var i = 0; i < L; i++) {
-        //     var obj = result[i];
-        //     for (var j in obj) {
-        //         fields.push(j)
-        //     }
-        // }
-        // $.unique(fields).forEach(function(e) {
-        //     $('#y_accessor').append("<option value="+e+">"+e+"</option>")
-        //     $('#x_accessor').append("<option value="+e+">"+e+"</option>")
-        // })
-        // console.log($.unique(fields))
-        // $('.data').val(this.result);
       };
       reader.readAsText(f);
 

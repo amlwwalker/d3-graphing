@@ -3,25 +3,25 @@
 
     <title>Visua-Learn</title>
 
-    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,700' rel='stylesheet' type='text/css'>
-    <link href='https://fonts.googleapis.com/css?family=PT+Serif:400,700,400italic' rel='stylesheet' type='text/css'>
-    <link href='https://netdna.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.css' rel='stylesheet' type='text/css'>
-    <link href='https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css' rel='stylesheet' type='text/css'>
+    <link href='fonts/open-sans.css' rel='stylesheet' type='text/css'>
+    <link href='fonts/pt-serif-italics.css' rel='stylesheet' type='text/css'>
+    <link href='fonts/font-awesome.css' rel='stylesheet' type='text/css'>
+    <link href='css/bootstrap.min.css' rel='stylesheet' type='text/css'>
 
     <link href='dist/metricsgraphics.css' rel='stylesheet' type='text/css'>
     
     <link href='css/interactive.css' rel='stylesheet' type='text/css'>
 
-    <script src='https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
+    <script src='js/jquery.min.js'></script>
     <script src="js/lib/ace.js" charset="utf-8"></script>
     <script src="js/lib/worker-javascript.js" charset="utf-8"></script>
     
     <!-- dev start -->
   
-    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
     <!-- dev end -->
     <link href='css/stylesheet.css' rel='stylesheet' type='text/css'>
-    <script src='http://html5-demos.appspot.com/static/filesystem/filer.js/demos/js/dnd.js'></script>
+    <script src='js/dnd.js'></script>
 </head>
 
 <body>
@@ -178,34 +178,16 @@ cssEditor.setValue(retrievedCss, null, 2);
 javascriptEditor.setValue(retrievedJavascript, null, 2);
 
 $(".editor").keyup(function(){
-// $('.update').on('click', function() {
     var view=$('#view');
-    // view.contents().find('html').html(htmlEditor.getSession().getValue());
+
     var iframe = document.getElementById('view');
     iframe = (iframe.contentWindow) ? iframe.contentWindow : (iframe.contentDocument.document) ? iframe.contentDocument.document : iframe.contentDocument;
     document.getElementById("view").srcdoc = htmlEditor.getSession().getValue();
-     
-     var styles=iframe.document.getElementsByTagName('style');
-     var i = styles.length;
-      while (i--) {
-          styles[i].parentNode.removeChild(styles[i]);
-      }
 
-     var scripts=iframe.document.getElementsByTagName('script');
-     var i = scripts.length;
-      while (i--) {
-          scripts[i].parentNode.removeChild(scripts[i]);
-      }
     $("#view").on("load", function () {
-
-
         //load in the css from the css editor and apply to the head
         var css = cssEditor.getSession().getValue()
         body = iframe.document.body || iframe.document.getElementsByTagName('body')[0];
-        
-        if (iframe.document.getElementById('style')) {
-          console.log('it exists!!!')
-        }
 
         style = iframe.document.createElement('style');
         style.type = 'text/css';
