@@ -1,11 +1,14 @@
-# Drag and Drop D3
+# VisuaLearn
 
-![layout](layout.png)
-* I wanted a library that allowed me to drag and drop json or csv data and get d3 graphs out.
-* D3 is a pain in its raw form, but things like dimple.js and metricsgraphics.js make it a bit easier.
-* However for quick simple visualisation it still wasnt everything. Google charts comes close but...... :(
+* I wanted an easy way to drop CSV or JSON files and immediately be able to graph them using d3 (so I could get SVG images)
+* Libraries already existed to draw the graphics like [metricsgraphics](http://metricsgraphicsjs.org/) and [function-plot](http://maurizzzio.github.io/function-plot/), so I just built a simple interface to be able to use the graphs these libraries provided.
+* The left most (ace) text area can have `.csv` and `.json` files dropped onto it. `.csv` will be converted to `json` on dropping. 
+* The central area is where the code to configure the graph is loaded. On choosing a graph type a sample code snippet will be loaded in. 
+* Any of the features of metricsgraphics or function-plot can be used here, however not mixed together.
+On the right the graph will be drawn and the SVG can be downloaded
 
-* This is a small tool that is entirely client side for just this.
-Drag json/csv files onto the data editor, at the bottom choose the graph type you want and (assuming that the data can be graphed) you will get a graph out.
 
-* For example, choose 'LINES' at the bottom, then choose SIMPLE CHART. Then drag and drop the simple.json file into the data editor, and click run. You get a graph.
+### Future
+
+* Implement downloading as PNG
+* Fix title above graph/chart/SVG
