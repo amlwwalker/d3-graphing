@@ -8,90 +8,125 @@
     <link href='fonts/font-awesome.css' rel='stylesheet' type='text/css'>
     <link href='css/bootstrap.min.css' rel='stylesheet' type='text/css'>
 
-    <link href='dist/metricsgraphics.css' rel='stylesheet' type='text/css'>
+    <link href='metricsgraphics/metricsgraphics.css' rel='stylesheet' type='text/css'>
     
     <link href='css/interactive.css' rel='stylesheet' type='text/css'>
 
     <script src='js/jquery.min.js'></script>
+    <script src='js/d3.min.js' charset='utf-8'></script>
     <script src="js/lib/ace.js" charset="utf-8"></script>
-    <script src="js/lib/worker-javascript.js" charset="utf-8"></script>
-    
-    <!-- dev start -->
-  
     <script src="js/bootstrap.min.js"></script>
-    <!-- dev end -->
-    <link href='css/stylesheet.css' rel='stylesheet' type='text/css'>
+    <!-- dev start -->
+    <script src='metricsgraphics/js/MG.js'></script>
+    <script src='metricsgraphics/js/common/data_graphic.js'></script>
+    <script src='metricsgraphics/js/common/hooks.js'></script>
+    <script src='metricsgraphics/js/common/register.js'></script>
+    <script src='metricsgraphics/js/common/bootstrap_tooltip_popover.js'></script>
+    <script src='metricsgraphics/js/common/chart_title.js'></script>
+    <script src='metricsgraphics/js/common/y_axis.js'></script>
+    <script src='metricsgraphics/js/common/x_axis.js'></script>
+    <script src='metricsgraphics/js/common/init.js'></script>
+    <script src='metricsgraphics/js/common/markers.js'></script>
+    <script src='metricsgraphics/js/common/window_listeners.js'></script>
+    <script src='metricsgraphics/js/layout/bootstrap_dropdown.js'></script>
+    <script src='metricsgraphics/js/layout/button.js'></script>
+    <script src='metricsgraphics/js/charts/line.js'></script>
+    <script src='metricsgraphics/js/charts/histogram.js'></script>
+    <script src='metricsgraphics/js/charts/point.js'></script>
+    <script src='metricsgraphics/js/charts/bar.js'></script>
+    <script src='metricsgraphics/js/charts/table.js'></script>
+    <script src='metricsgraphics/js/charts/missing.js'></script>
+    <script src='metricsgraphics/js/misc/process.js'></script>
+    <script src='metricsgraphics/js/misc/smoothers.js'></script>
+    <script src='metricsgraphics/js/misc/formatters.js'></script>
+    <script src='metricsgraphics/js/misc/transitions.js'></script>
+    <script src='metricsgraphics/js/misc/utility.js'></script>
+    <script src='metricsgraphics/js/misc/error.js'></script>
     <script src='js/dnd.js'></script>
+
+    <!-- functional graphics -->
+    <script src="js/function-plot.js"></script>
+    <!-- dev end -->
+
 </head>
 
 <body>
 
     <div class='container'>
+        <!-- graph types -->
+        <div class="row tab-content col-xs-12">
+        <ul class="nav nav-pills">
+            <li><a href='#' id='goto-lines' data-toggle="tab">Lines</a></li>
+            <li><a href='#' id='goto-multilines' data-toggle="tab">Multiple Lines</a></li>
+            <li><a href='#' id='goto-data' data-toggle="tab">Data</a></li>
+            <li><a href='#' id='goto-bars' data-toggle="tab">Bars</a></li>
+            <li><a href='#' id='goto-functional' data-toggle="tab">Functional</a></li>    
+        </ul>
+        <ul class='nav nav-pills topics examples text-center'>
+      </div>
+      <!-- configuration area -->
         <div class='row main-windows-titles'>
             <div class='col-xs-3'>Data</div>
             <div class='js-title col-xs-5'>
-                Editor
-                <!-- <button type='button' class='update btn'>Run</button> -->
+                JavaScript <a href='https://github.com/mozilla/metrics-graphics/wiki/List-of-Options#list-of-options' target='_blank'>See Full List of Options</a>
+                <button type='button' class='update btn'>Run</button>
             </div>
-            <div class='col-xs-3'>Rendering</div>
-
+<!--             <div class='col-xs-4' id='fields'>
+                y_accessor
+                <select id="y_accessor">
+                </select>
+                x_accessor
+                <select id="x_accessor">
+                </select>
+            </div> -->
         </div>
         <div class='row main-windows'>
-
             <div class='data col-xs-3' id='data'>
+                <!-- <textarea></textarea> -->
             </div>
-            <div class="tab-content col-xs-5">
-                <ul class="nav nav-pills">
-                    <li class="active"><a data-toggle="pill" href="#HTML">HTML</a></li>
-                    <li><a data-toggle="pill" href="#CSS">CSS</a></li>
-                    <li><a data-toggle="pill" href="#JAVASCRIPT">JAVASCRIPT</a></li>
-                </ul>
-                <div id="HTML" class="tab-pane fade in active">
-                  <div class='js editor' id='htmlEditor'></div>
-              </div>
-              <div id="CSS" class="tab-pane fade">
-                  <div class='js editor' id='cssEditor'></div>
-              </div>
-              <div id="JAVASCRIPT" class="tab-pane fade">
-                  <div class='js editor' id='javascriptEditor'></div>
-              </div>
-          </div>
-          <div class='col-xs-3'>
-            <iframe id="view"></iframe>
+            <div class='js col-xs-5' id='editor'></div>
+            <div class='col-xs-3'>
+                <div class='result text-center'></div>
+                <div class='legend text-center'></div>
+                <button class="btn btn-success" id="save_as_svg" value="">
+            Save as SVG</button>
+                <div class="console" id="console"></div>
+            </div>
         </div>
+      </div>
+</div>
+
     </div>
-
-
-
-
-</div>
-
-
-
-<div class='container footer'>
-</div>
-<script> 
-$('#goto-lines').on('click', function() {
-    $('.topics').load('charts/lines.htm', function(data) {
-        $('.topics').html(data)
+    <div class='container footer'>
+    </div>
+    <script> 
+    $('#goto-lines').on('click', function() {
+            $('.topics').load('charts/lines.htm', function(data) {
+                $(".topics").html(data)
+        });
     });
-});
-$('#goto-multilines').on('click', function() {
-    $('.topics').load('charts/multilines.htm', function(data) {
-        $('.topics').html(data)
+    $('#goto-multilines').on('click', function() {
+            $('.topics').load('charts/multilines.htm', function(data) {
+                $('.topics').html(data)
+        });
     });
-});
-$('#goto-data').on('click', function() {
-    $('.topics').load('charts/scatters.htm', function(data) {
-        $('.topics').html(data)
+    $('#goto-data').on('click', function() {
+            $('.topics').load('charts/scatters.htm', function(data) {
+                $('.topics').html(data)
+        });
     });
-});
-$('#goto-bars').on('click', function() {
-    $('.topics').load('charts/bars.htm', function(data) {
-        $('.topics').html(data)
+    $('#goto-bars').on('click', function() {
+            $('.topics').load('charts/bars.htm', function(data) {
+                $('.topics').html(data)
+        });
     });
-});
-</script>
+    $('#goto-functional').on('click', function() {
+            $('.topics').load('charts/functional.htm', function(data) {
+                $('.topics').html(data)
+        });
+    });
+    
+    </script>
     <script> //drag and drop
     var dnd = new DnDFileController('#data', function(files) {  
       var f = files[0];
@@ -99,156 +134,122 @@ $('#goto-bars').on('click', function() {
       //its a csv, so convert to json
       if (f.type.match('text/csv')) {
         csv = true;
-    }
+      }
 
-    var reader = new FileReader();
-    reader.onloadend = function(e) {
-        process = this.result
-        process = JSON.stringify(JSON.parse(process), null, 2);
+      var reader = new FileReader();
+        reader.onloadend = function(e) {
+            process = this.result
         if (csv) {
             process = csvJSON(process)
         }
         var result = JSON.parse(process);
+        // console.log(result)
+        // JSON.stringify(data, null, 2)
         jsonData.setValue(process);
 
-    };
-    reader.readAsText(f);
+      };
+      reader.readAsText(f);
 
-  });
-</script>
-<script>
-var default_call = '<html>\n'
-+ '<head>\n'
-+ '</head>\n'
-+ '<body>\n'
-+ '<h1>hello world</h1>\n'
-+ '<script>\n'
-+ 'document.body.style.backgroundColor = "red";\n'
-+ 'var jon = JSON.parse(parent.jsonData.getValue())\n'
-+ 'for (var v in jon) {\n'
-+ 'document.body.innerHTML = jon[v].name\n'
-+ '}\n'
-+ '<\/script>\n'
-+ '</body>\n'
-+ '</html>\n'
-var retrievedCss = localStorage.getItem('css');
-var retrievedJavascript = localStorage.getItem('javascript');
+      // read the json and process all of the fields in each element
 
-var retrievedCode = localStorage.getItem('code'); 
-console.log(retrievedCode)
-if (retrievedCode != null) {
-    default_call = retrievedCode;
-}                    
-jsonData = ace.edit("data");
-jsonData.getSession().setUseWrapMode(true);
-jsonData.getSession().setMode("ace/mode/javascript");
-jsonData.setValue(default_call);
-
-jsonData.setHighlightActiveLine(false);
-
-var htmlEditor = ace.edit("htmlEditor");
-htmlEditor.getSession().setUseWrapMode(true);
-htmlEditor.session.setMode("ace/mode/html");
-        htmlEditor.setValue(default_call);
-        htmlEditor.gotoLine(1);
-        htmlEditor.setHighlightActiveLine(false);
-
-        var retrievedJson = localStorage.getItem('json');
-        if (retrievedJson != null) {
-            jsonData.setValue(retrievedJson, null, 2);
-        } else {
-            d3.json('data/ufo-sightings.json', function(data) {
-                jsonData.setValue(JSON.stringify(data, null, 2));
-                document.getSelection().removeAllRanges();
-            // eval(htmlEditor.getValue());
-        });
-        }
-        
-        jsonData.gotoLine(1);
-
-var cssEditor = ace.edit("cssEditor");
-cssEditor.session.setMode("ace/mode/css");
-cssEditor.getSession().setUseWrapMode(true);
-
-var javascriptEditor = ace.edit("javascriptEditor");
-javascriptEditor.session.setMode("ace/mode/javascript");
-javascriptEditor.getSession().setUseWrapMode(true);
-
-cssEditor.setValue(retrievedCss, null, 2);
-javascriptEditor.setValue(retrievedJavascript, null, 2);
-
-$(".editor").keyup(function(){
-    var view=$('#view');
-
-    var iframe = document.getElementById('view');
-    iframe = (iframe.contentWindow) ? iframe.contentWindow : (iframe.contentDocument.document) ? iframe.contentDocument.document : iframe.contentDocument;
-    document.getElementById("view").srcdoc = htmlEditor.getSession().getValue();
-
-    $("#view").on("load", function () {
-        //load in the css from the css editor and apply to the head
-        var css = cssEditor.getSession().getValue()
-        body = iframe.document.body || iframe.document.getElementsByTagName('body')[0];
-
-        style = iframe.document.createElement('style');
-        style.type = 'text/css';
-        if (style.styleSheet){
-          style.styleSheet.cssText = css;
-        } else {
-          style.appendChild(document.createTextNode(css));
-        }
-
-        iframe.document.getElementsByTagName('head')[0].appendChild(style);
-        
-        var javascript = javascriptEditor.getSession().getValue()
-        script = iframe.document.createElement('script');
-        script.type = 'text/javascript';
-        script.innerHTML = javascript
- 
-        
-        iframe.document.getElementsByTagName('body')[0].appendChild(script);
-    
     });
+    </script>
+    <script>
+        var default_call = 'MG.data_graphic({\n'
+            + '  title: "UFO Sightings",\n'
+            + '  description: "Yearly UFO sightings from 1945 to 2010.",\n'
+            + '  data: JSON.parse(jsonData.getValue()),\n'
+            + '  markers: [{\'year\': 1964, \'label\': \'"The Creeping Terror" released\'}],\n'
+            + '  width: 400,\n'
+            + '  height: 250,\n'
+            + '  target: ".result",\n'
+            + '  x_accessor: "year",\n'
+            + '  y_accessor: "sightings",\n'
+            + '  interpolate: "monotone"\n'
+            + '});';
+        jsonData = ace.edit("data");
+        jsonData.getSession().setMode("ace/mode/javascript");
+        // jsonData.setValue(default_call);
+        jsonData.gotoLine(1);
+        jsonData.setHighlightActiveLine(false);
 
-    
-    localStorage.setItem('code', htmlEditor.getSession().getValue());
-    localStorage.setItem('json', jsonData.getSession().getValue());
-    localStorage.setItem('css', cssEditor.getSession().getValue());
-    localStorage.setItem('javascript', javascriptEditor.getSession().getValue());
+        var editor = ace.edit("editor");
+        editor.getSession().setMode("ace/mode/javascript");
+        editor.setValue(default_call);
+        editor.gotoLine(1);
+        editor.setHighlightActiveLine(false);
 
-});
+        d3.json('data/ufo-sightings.json', function(data) {
+            jsonData.setValue(JSON.stringify(data, null, 2));
+            document.getSelection().removeAllRanges();
+            eval(editor.getValue());
+        })
 
+        $('.update').on('click', function() {
+            eval(editor.getValue());
+            document.getSelection().removeAllRanges();
+        })
+    </script>
 
-        </script>
+    <script>
+    function downloadSVG()
+    {
+                // Declare Variables
+        var margin = {top: 60, right: 60, bottom: 60, left:120},
+        w = 600 - margin.left - margin.right,
+        h = 450 - margin.top - margin.bottom;
 
+        var svg = d3.select("svg")
+        svg.attr("width", w + margin.left + margin.right)
+        svg.attr("height", h + margin.top + margin.bottom)
+        svg.attr("font-family", "'Helvetica Neue',Helvetica,Arial,sans-serif")
+        svg.attr("color", "#333")
+        svg.append('g')
+        svg.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+        console.log(MG)
+        //Create Title 
+        svg.append("text")
+        .attr("x", w / 2 )
+        .attr("y", 0)
+        .style("text-anchor", "middle")
+        .text("Title of Diagram");
+
+        var e = document.createElement('script'); 
+        e.setAttribute('src', 'https://nytimes.github.io/svg-crowbar/svg-crowbar.js'); 
+        e.setAttribute('class', 'svg-crowbar'); 
+        document.body.appendChild(e);
+    }
+    $("#save_as_svg").click(function() { downloadSVG(); });
+    </script>
     <script>
     //var csv is the CSV file with headers
     function csvJSON(csv){
-
+     
       var lines=csv.split("\n");
-
+     
       var result = [];
-
+     
       var headers=lines[0].split(",");
-
+     
       for(var i=1;i<lines.length;i++){
-
+     
           var obj = {};
           var currentline=lines[i].split(",");
-
+     
           for(var j=0;j<headers.length;j++){
             headers[j] = headers[j].replace(/(?:\\[rn]|[\r\n]+)+/g, ""); 
             if (currentline[j] !== undefined) {
               obj[headers[j]] = currentline[j].replace(/(?:\\[rn]|[\r\n]+)+/g, "");  
+            }
           }
+     
+          result.push(obj);
+     
       }
-
-      result.push(obj);
-
-  }
-
+      
       //return result; //JavaScript object
       return JSON.stringify(result,null,2); //JSON
-  }
-  </script>
+    }
+</script>
 </body>
 </html>
