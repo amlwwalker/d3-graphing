@@ -7,18 +7,30 @@
 <script> 
 $('#goto-simple').on('click', function() {
     var simple = 'MG.data_graphic({\n'
-    + '  title: "UFO Sightings",\n'
-    + '  description: "Yearly UFO sightings from 1945 to 2010.",\n'
-    + '  data: MG.convert.date(JSON.parse(jsonData.getValue()), \'date\'),\n'
+    + '  title: "Date conversion",\n'
+    + '  description: "Date vs millions spent.",\n'
+    + '  data: JSON.parse(jsonData.getValue()),\n'
     + '  width: 400,\n'
     + '  height: 250,\n'
     + '  target: ".result",\n'
     + '  x_accessor: "date",\n'
     + '  y_accessor: "value",\n'
-    + '  show_confidence_band: [],\n'
     + '  interpolate: "monotone"\n'
     + '});';
     editor.setValue(simple);
+});
+
+MG.data_graphic({
+  title: "UFO Sightings",
+  description: "Yearly UFO sightings from 1945 to 2010.",
+  data: JSON.parse(jsonData.getValue()),
+  markers: [{'year': 1964, 'label': '"The Creeping Terror" released'}],
+  width: 400,
+  height: 250,
+  target: ".result",
+  x_accessor: "year",
+  y_accessor: "sightings",
+  interpolate: "monotone"
 });
 $('#goto-confidence').on('click', function() {
     var confidence = 'MG.data_graphic({\n'

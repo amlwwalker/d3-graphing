@@ -1,7 +1,7 @@
 <li><a href='#' id='goto-scatter' class='pill'>Simple Scatter</a></li>
 <li><a href='#' id='goto-categorize' class='pill'>Automatic categorizing</a></li>
 <li><a href='#' id='goto-bestfit' class='pill'>Simple Line of Best Fit</a></li>
-<li><a href='#' id='goto-leastsquares' class='pill'>Another Least Squares Example</a></li>
+<li><a href='#' id='goto-leastsquares' class='pill'>Least Squares Example with Dates</a></li>
 <li><a href='#' id='goto-sizeandcolor' class='pill'>Scatterplot with Size and Color</a></li>
 
 <script> 
@@ -94,7 +94,7 @@ $('#goto-bestfit').on('click', function() {
 });
 $('#goto-sizeandcolor').on('click', function() {
     var sizeAndColor = 'data = JSON.parse(jsonData.getValue())\n'
-+ 'var color_range = [\'white\',\'yellow\'];'
++ 'var color_range = [\'blue\',\'yellow\'];'
 + 'MG.data_graphic({\n'
 + '    title: "Scatterplot with Size and Color",\n'
 + '    description: "Scatterplots have x_accessor, y_accessor, size_accessor, and color_accessor. For the last two you can also provide domain and range functions, to make it easy to change the color ranges. Colors default to red and blue, but can be overridden by passing an array of colors to color_range, as we\'ve done in this example for the dark theme.",\n'
