@@ -58,7 +58,7 @@ var conditions = 'functionPlot({\n'
 + '		data: JSON.parse(jsonData.getValue())\n'
 + '});';
 var data = '[\n'
-+ ' { "fn": "x^3" }\n'
++ ' { "fn": "x < 0 ? 3 : x^3" }\n'
 + ']'
 	jsonData.setValue(data);
 	$('.result svg').html('')
@@ -295,14 +295,12 @@ var zoomBox = 'functionPlot({\n'
 + '    	grid: true,\n'
 + '	    width: 450,\n'
 + '     height: 250,\n'
-+ '     yDomain: [-1, 5],\n'
++ '     yDomain: [-1.5, 1.5],\n'
 + '     xDomain: [-4, 4],\n'
-+ '		data: [{\n'
-+ '			fn: \'sin(x)\'\n'
-+ '		}],\n'
++ '	 data: JSON.parse(jsonData.getValue()),\n'
 + '});';
 var data = '[\n'
-+ ' { "fn": "x^3" }\n'
++ ' { "fn": "sin(x)" }\n'
 + ']'
 	jsonData.setValue(data);
 	$('.result svg').html('')
