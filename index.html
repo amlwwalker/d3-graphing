@@ -90,6 +90,8 @@
                 <div class='legend text-center'></div>
                 <button class="btn btn-success" id="save_as_svg" value="">
             Save as SVG</button>
+            <button class="btn btn-success" id="save_as_png">Save as PNG</button>
+            </li>
                 <div class="console" id="console"></div>
             </div>
         </div>
@@ -198,42 +200,83 @@
         })
 
         $('.update').on('click', function() {
+            $('svg').html('')
+            $('.mg-chart-title').hide()
             eval(editor.getValue());
             document.getSelection().removeAllRanges();
         })
     </script>
 
     <script>
+    $("#save_as_svg").click(function() { downloadSVG(); });
     function downloadSVG()
     {
                 // Declare Variables
         var margin = {top: 60, right: 60, bottom: 60, left:120},
-        w = 600 - margin.left - margin.right,
-        h = 450 - margin.top - margin.bottom;
+        width = d3.select("svg").attr("width")
+        height = d3.select("svg").attr("height")
 
         var svg = d3.select("svg")
-        svg.attr("width", w + margin.left + margin.right)
-        svg.attr("height", h + margin.top + margin.bottom)
+        // //Create Title 
+        // svg.append("text")
+        // .attr("x", width / 2 )
+        // .attr("y", 0)
+        // .style("text-anchor", "middle")
+        // .text($('.mg-chart-title').html());
+
+        svg.attr("width", width)
+        svg.attr("height", height)
         svg.attr("font-family", "'Helvetica Neue',Helvetica,Arial,sans-serif")
         svg.attr("color", "#333")
         svg.append('g')
-        svg.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-        console.log(MG)
-        //Create Title 
-        svg.append("text")
-        .attr("x", w / 2 )
-        .attr("y", 0)
-        .style("text-anchor", "middle")
-        .text("Title of Diagram");
+
 
         var e = document.createElement('script'); 
         e.setAttribute('src', 'https://nytimes.github.io/svg-crowbar/svg-crowbar.js'); 
         e.setAttribute('class', 'svg-crowbar'); 
         document.body.appendChild(e);
     }
-    $("#save_as_svg").click(function() { downloadSVG(); });
-    </script>
-    <script>
+    $("#save_as_png").click(function() {
+          var html = d3.select("svg")
+                .attr("version", 1.1)
+                .attr("xmlns", "http://www.w3.org/2000/svg")
+                .node().parentNode.innerHTML;
+          var width = d3.select("svg").attr("width")
+          var height = d3.select("svg").attr("height")
+          // console.log(html);
+          var imgsrc = 'data:image/svg+xml;base64,'+ btoa(unescape(encodeURIComponent(html)));  
+          saveSVG(imgsrc);
+    });
+
+    function saveSVG(imgsrc) {
+    // inputValue = prompt("What would you like to call the image?")
+      var canvas = document.createElement("canvas");
+
+        canvas.width = d3.select("svg").attr("width")
+        canvas.height = d3.select("svg").attr("height")
+        context = canvas.getContext("2d");
+
+        var image = new Image;
+        image.src = imgsrc;
+        
+        image.onload = function() {
+            console.log(1)
+          context.drawImage(image, 0, 0);
+
+          var canvasdata = canvas.toDataURL("image/png");
+
+          var pngimg = '<img src="'+canvasdata+'">'; 
+          alert("pngimg", pngimg)
+            d3.select("body").html(pngimg);
+
+          var a = document.createElement("a");
+          a.download = "name"+".png";
+          a.href = canvasdata;
+          a.click();
+        };
+}
+
+
     //var csv is the CSV file with headers
     function csvJSON(csv){
      
