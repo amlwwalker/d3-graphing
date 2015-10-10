@@ -1,5 +1,7 @@
 # VisuaLearn
 
+![d3-graphing.png](d3-graphing.png)
+
 * I wanted an easy way to drop CSV or JSON files and immediately be able to graph them using d3 (so I could get SVG images)
 * Libraries already existed to draw the graphics like [metricsgraphics](http://metricsgraphicsjs.org/) and [function-plot](http://maurizzzio.github.io/function-plot/), so I just built a simple interface to be able to use the graphs these libraries provided.
 * The left most (ace) text area can have `.csv` and `.json` files dropped onto it. `.csv` will be converted to `json` on dropping. 
