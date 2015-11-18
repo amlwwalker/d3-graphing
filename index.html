@@ -46,6 +46,9 @@
 
     <!-- functional graphics -->
     <script src="js/function-plot.js"></script>
+    <script src="js/regression.js"></script>
+    <script src="js/jquery.flot.js"></script>
+    <script src="js/simg.min.js"></script>
     <!-- dev end -->
 
 </head>
@@ -60,22 +63,26 @@
             <li><a href='#' id='goto-multilines' data-toggle="tab">Multiple Lines</a></li>
             <li><a href='#' id='goto-data' data-toggle="tab">Data</a></li>
             <li><a href='#' id='goto-bars' data-toggle="tab">Bars</a></li>
-            <li><a href='#' id='goto-functional' data-toggle="tab">Functional</a></li>    
+            <li><a href='#' id='goto-functional' data-toggle="tab">Functional</a></li>  
+            <li><a href='#' id='goto-regression' data-toggle="tab">Regression</a></li>    
         </ul>
         <ul class='nav nav-pills topics examples text-center'>
       </div>
       <!-- configuration area -->
         <div class='row main-windows-titles'>
-            <div class='col-xs-3'>Data</div>
+            <div class='col-xs-3'>
+                Data
+            </div>
             <div class='js-title col-xs-5'>
-                JavaScript
+                    Javascript
                 <button type='button' class='update btn'>Run</button>
             </div>
-<!--             <div class='col-xs-4' id='fields'>
+            <!--
+            <div class='col-xs-4' id='fields'>
                 y_accessor
                 <select id="y_accessor">
                 </select>
-                x_accessor
+                x_accessor this is new??
                 <select id="x_accessor">
                 </select>
             </div> -->
@@ -139,6 +146,11 @@
                 $('.topics').html(data)
         });
     });
+    $('#goto-regression').on('click', function() {
+            $('.topics').load('charts/regression.htm', function(data) {
+                $('.topics').html(data)
+        });
+    });
     
     </script>
     <script> //drag and drop
@@ -152,13 +164,11 @@
 
       var reader = new FileReader();
         reader.onloadend = function(e) {
-            process = this.result
+        process = this.result
         if (csv) {
             process = csvJSON(process)
         }
         var result = JSON.parse(process);
-        // console.log(result)
-        // JSON.stringify(data, null, 2)
         jsonData.setValue(process);
 
       };
@@ -236,46 +246,84 @@
         e.setAttribute('class', 'svg-crowbar'); 
         document.body.appendChild(e);
     }
-    $("#save_as_png").click(function() {
-          var html = d3.select("svg")
-                .attr("version", 1.1)
-                .attr("xmlns", "http://www.w3.org/2000/svg")
-                .node().parentNode.innerHTML;
-          var width = d3.select("svg").attr("width")
-          var height = d3.select("svg").attr("height")
-          // console.log(html);
-          var imgsrc = 'data:image/svg+xml;base64,'+ btoa(unescape(encodeURIComponent(html)));  
-          saveSVG(imgsrc);
+
+    d3.select("#save_as_png").on("click", function(){
+
+        var svg = document.querySelector( "svg" );
+        var svgData = new XMLSerializer().serializeToString( svg );
+
+        var canvas = document.createElement("canvas");
+        canvas.width = d3.select("svg").attr("width");
+        canvas.height = d3.select("svg").attr("height");
+        ctx = canvas.getContext("2d");
+
+        var img = document.createElement( "img" );
+        img.setAttribute( "src", "data:image/svg+xml;base64," + btoa( svgData ) );
+
+        img.onload = function() {
+            ctx.drawImage( img, 0, 0 );
+            
+            var canvasdata = canvas.toDataURL("image/png");
+
+            console.log(canvasdata)
+            var pngimg = '<img src="'+canvasdata+'">'; 
+            d3.select("#pngdataurl").html(pngimg);
+
+            var a = document.createElement("a");
+
+            a.download = "name"+".png";
+            a.href = canvasdata;
+            console.log(a.click())
+        };
+      var html = d3.select("svg")
+            .attr("version", 1.1)
+            .attr("xmlns", "http://www.w3.org/2000/svg")
+            .node().parentNode.innerHTML;
+      var width = d3.select("svg").attr("width")
+      var height = d3.select("svg").attr("height")
+
+      var imgsrc = 'data:image/svg+xml;base64,'+ btoa(unescape(encodeURIComponent(html)));  
+      // saveSVG(imgsrc, width, height);
+
     });
 
-    function saveSVG(imgsrc) {
-    // inputValue = prompt("What would you like to call the image?")
-      var canvas = document.createElement("canvas");
+//save the current svg as a png - offer the user to name it
+function saveSVG(imgsrc, width, height) {
+    var inputValue = prompt("Name the image")
+      if (!inputValue) {
+        return false
+      }
+      console.log("not false")
 
-        canvas.width = d3.select("svg").attr("width")
-        canvas.height = d3.select("svg").attr("height")
+      var canvas = document.createElement("canvas");
+        canvas.width = width;
+        canvas.height = height;
         context = canvas.getContext("2d");
 
-        var image = new Image;
+        var image = new Image();
         image.src = imgsrc;
-        
-        image.onload = function() {
-            console.log(1)
+        console.log(image.src);
+        //The HTMLImageElement provided is in the 'broken' state.
+        image.onload = function(err) {
+          console.log("here")
           context.drawImage(image, 0, 0);
-
+          console.log(context)
           var canvasdata = canvas.toDataURL("image/png");
 
+          console.log(canvasdata)
           var pngimg = '<img src="'+canvasdata+'">'; 
-          alert("pngimg", pngimg)
-            d3.select("body").html(pngimg);
+            d3.select("#pngdataurl").html(pngimg);
 
           var a = document.createElement("a");
-          a.download = "name"+".png";
-          a.href = canvasdata;
-          a.click();
-        };
-}
 
+          a.download = inputValue+".png";
+          a.href = canvasdata;
+          console.log(a.click())
+
+        };
+        console.log("beyond load")
+
+}
 
     //var csv is the CSV file with headers
     function csvJSON(csv){

@@ -1,5 +1,4 @@
 var theme = 'light';
-
 (function() {
     'use strict';
 
