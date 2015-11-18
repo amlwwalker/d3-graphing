@@ -8,7 +8,7 @@
     <link href='fonts/font-awesome.css' rel='stylesheet' type='text/css'>
     <link href='css/bootstrap.min.css' rel='stylesheet' type='text/css'>
 
-    <link href='metricsgraphics/metricsgraphics.css' rel='stylesheet' type='text/css'>
+    <link href='metrics-graphics/dist/metricsgraphics.css' rel='stylesheet' type='text/css'>
     
     <link href='css/interactive.css' rel='stylesheet' type='text/css'>
 
@@ -17,31 +17,31 @@
     <script src="js/lib/ace.js" charset="utf-8"></script>
     <script src="js/bootstrap.min.js"></script>
     <!-- dev start -->
-    <script src='metricsgraphics/js/MG.js'></script>
-    <script src='metricsgraphics/js/common/data_graphic.js'></script>
-    <script src='metricsgraphics/js/common/hooks.js'></script>
-    <script src='metricsgraphics/js/common/register.js'></script>
-    <script src='metricsgraphics/js/common/bootstrap_tooltip_popover.js'></script>
-    <script src='metricsgraphics/js/common/chart_title.js'></script>
-    <script src='metricsgraphics/js/common/y_axis.js'></script>
-    <script src='metricsgraphics/js/common/x_axis.js'></script>
-    <script src='metricsgraphics/js/common/init.js'></script>
-    <script src='metricsgraphics/js/common/markers.js'></script>
-    <script src='metricsgraphics/js/common/window_listeners.js'></script>
-    <script src='metricsgraphics/js/layout/bootstrap_dropdown.js'></script>
-    <script src='metricsgraphics/js/layout/button.js'></script>
-    <script src='metricsgraphics/js/charts/line.js'></script>
-    <script src='metricsgraphics/js/charts/histogram.js'></script>
-    <script src='metricsgraphics/js/charts/point.js'></script>
-    <script src='metricsgraphics/js/charts/bar.js'></script>
-    <script src='metricsgraphics/js/charts/table.js'></script>
-    <script src='metricsgraphics/js/charts/missing.js'></script>
-    <script src='metricsgraphics/js/misc/process.js'></script>
-    <script src='metricsgraphics/js/misc/smoothers.js'></script>
-    <script src='metricsgraphics/js/misc/formatters.js'></script>
-    <script src='metricsgraphics/js/misc/transitions.js'></script>
-    <script src='metricsgraphics/js/misc/utility.js'></script>
-    <script src='metricsgraphics/js/misc/error.js'></script>
+    <script src='metrics-graphics/src/js/MG.js'></script>
+    <script src='metrics-graphics/src/js/common/data_graphic.js'></script>
+    <script src='metrics-graphics/src/js/common/hooks.js'></script>
+    <script src='metrics-graphics/src/js/common/register.js'></script>
+    <script src='metrics-graphics/src/js/common/bootstrap_tooltip_popover.js'></script>
+    <script src='metrics-graphics/src/js/common/chart_title.js'></script>
+    <script src='metrics-graphics/src/js/common/y_axis.js'></script>
+    <script src='metrics-graphics/src/js/common/x_axis.js'></script>
+    <script src='metrics-graphics/src/js/common/init.js'></script>
+    <script src='metrics-graphics/src/js/common/markers.js'></script>
+    <script src='metrics-graphics/src/js/common/window_listeners.js'></script>
+    <script src='metrics-graphics/src/js/layout/bootstrap_dropdown.js'></script>
+    <script src='metrics-graphics/src/js/layout/button.js'></script>
+    <script src='metrics-graphics/src/js/charts/line.js'></script>
+    <script src='metrics-graphics/src/js/charts/histogram.js'></script>
+    <script src='metrics-graphics/src/js/charts/point.js'></script>
+    <script src='metrics-graphics/src/js/charts/bar.js'></script>
+    <script src='metrics-graphics/src/js/charts/table.js'></script>
+    <script src='metrics-graphics/src/js/charts/missing.js'></script>
+    <script src='metrics-graphics/src/js/misc/process.js'></script>
+    <script src='metrics-graphics/src/js/misc/smoothers.js'></script>
+    <script src='metrics-graphics/src/js/misc/formatters.js'></script>
+    <script src='metrics-graphics/src/js/misc/transitions.js'></script>
+    <script src='metrics-graphics/src/js/misc/utility.js'></script>
+    <script src='metrics-graphics/src/js/misc/error.js'></script>
     <script src='js/dnd.js'></script>
 
     <!-- functional graphics -->
@@ -247,82 +247,52 @@
         document.body.appendChild(e);
     }
 
-    d3.select("#save_as_png").on("click", function(){
+d3.select("#save_as_png").on("click", function(){
+    $("path").addClass("mg-main-area mg-area1 mg-area1-color")
+  var html = d3.select("svg")
+        .attr("version", 1.1)
+        .attr("xmlns", "http://www.w3.org/2000/svg")
+        .node().parentNode.innerHTML;
+  var width = d3.select("svg").attr("width")
+  var height = d3.select("svg").attr("height")
+  // console.log(html);
+  var imgsrc = 'data:image/svg+xml;base64,'+ btoa(unescape(encodeURIComponent(html)));  
+  saveSVG(imgsrc, width, height);
 
-        var svg = document.querySelector( "svg" );
-        var svgData = new XMLSerializer().serializeToString( svg );
-
-        var canvas = document.createElement("canvas");
-        canvas.width = d3.select("svg").attr("width");
-        canvas.height = d3.select("svg").attr("height");
-        ctx = canvas.getContext("2d");
-
-        var img = document.createElement( "img" );
-        img.setAttribute( "src", "data:image/svg+xml;base64," + btoa( svgData ) );
-
-        img.onload = function() {
-            ctx.drawImage( img, 0, 0 );
-            
-            var canvasdata = canvas.toDataURL("image/png");
-
-            console.log(canvasdata)
-            var pngimg = '<img src="'+canvasdata+'">'; 
-            d3.select("#pngdataurl").html(pngimg);
-
-            var a = document.createElement("a");
-
-            a.download = "name"+".png";
-            a.href = canvasdata;
-            console.log(a.click())
-        };
-      var html = d3.select("svg")
-            .attr("version", 1.1)
-            .attr("xmlns", "http://www.w3.org/2000/svg")
-            .node().parentNode.innerHTML;
-      var width = d3.select("svg").attr("width")
-      var height = d3.select("svg").attr("height")
-
-      var imgsrc = 'data:image/svg+xml;base64,'+ btoa(unescape(encodeURIComponent(html)));  
-      // saveSVG(imgsrc, width, height);
-
-    });
+});
 
 //save the current svg as a png - offer the user to name it
 function saveSVG(imgsrc, width, height) {
-    var inputValue = prompt("Name the image")
+    
+  //update the text on the link
+    // function(inputValue){ 
+    var inputValue = "filename" 
       if (!inputValue) {
         return false
       }
-      console.log("not false")
-
       var canvas = document.createElement("canvas");
         canvas.width = width;
         canvas.height = height;
         context = canvas.getContext("2d");
 
-        var image = new Image();
+        var image = new Image;
         image.src = imgsrc;
         console.log(image.src);
-        //The HTMLImageElement provided is in the 'broken' state.
-        image.onload = function(err) {
-          console.log("here")
+        image.onload = function() {
           context.drawImage(image, 0, 0);
-          console.log(context)
+
           var canvasdata = canvas.toDataURL("image/png");
 
-          console.log(canvasdata)
           var pngimg = '<img src="'+canvasdata+'">'; 
             d3.select("#pngdataurl").html(pngimg);
 
           var a = document.createElement("a");
-
           a.download = inputValue+".png";
           a.href = canvasdata;
-          console.log(a.click())
-
+          a.click();
         };
-        console.log("beyond load")
-
+  //   }
+  // );
 }
 
     //var csv is the CSV file with headers
